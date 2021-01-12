@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import okta_ios_jwt_objc
 
 public struct HMACSignature : SignatureValidator,TokenSigner {
     let secret : Data

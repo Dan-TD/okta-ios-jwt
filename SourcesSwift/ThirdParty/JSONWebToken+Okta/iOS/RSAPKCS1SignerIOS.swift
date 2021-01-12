@@ -11,6 +11,7 @@
 */
 
 import Foundation
+import okta_ios_jwt_objc
 
 public struct RSAPKCS1SignerIOS: RSAPKCS1SignerProtocol {
     enum Error: Swift.Error {

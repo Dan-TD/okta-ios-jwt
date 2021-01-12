@@ -11,8 +11,9 @@
 */
 
 import Foundation
+import okta_ios_jwt_objc
 
-public struct RSAPKCS1VerifierMacOS: RSAPKCS1VerifierProtocol {
+public struct RSAPKCS1VerifierIOS: RSAPKCS1VerifierProtocol {
     public let hashFunction: SignatureAlgorithm.HashFunction
     public let key: RSAKey
 
@@ -24,14 +25,23 @@ public struct RSAPKCS1VerifierMacOS: RSAPKCS1VerifierProtocol {
     public func verify(_ input: Data, signature: Data) -> Bool {
         let signedDataHash = (input as NSData).jwt_shaDigest(withSize: self.hashFunction.rawValue)
         let padding = paddingForHashFunction(self.hashFunction)
-        
-        switch self.hashFunction.rawValue {
-        case 256:
-             return SecKeyVerifySignature(key.value, .rsaSignatureDigestPKCS1v15SHA256, signedDataHash as CFData, signature as CFData, nil)
-        case 384:
-            return SecKeyVerifySignature(key.value, .rsaSignatureDigestPKCS1v15SHA384, signedDataHash as CFData, signature as CFData, nil)
-        case 512:
-            return SecKeyVerifySignature(key.value, .rsaSignatureDigestPKCS1v15SHA512, signedDataHash as CFData, signature as CFData, nil)
+
+        let result = signature.withUnsafeBytes { signatureRawPointer in
+            signedDataHash.withUnsafeBytes { signedHashRawPointer in
+                SecKeyRawVerify(
+                    key.value,
+                    padding,
+                    signedHashRawPointer,
+                    signedDataHash.count,
+                    signatureRawPointer,
+                    signature.count
+                )
+            }
+        }
+
+        switch result {
+        case errSecSuccess:
+            return true
         default:
             return false
         }
