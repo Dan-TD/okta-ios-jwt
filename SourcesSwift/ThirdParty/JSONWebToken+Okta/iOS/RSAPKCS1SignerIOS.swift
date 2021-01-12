@@ -33,7 +33,10 @@ public struct RSAPKCS1SignerIOS: RSAPKCS1SignerProtocol {
         var result = Data(count: SecKeyGetBlockSize(self.key.value))
         var resultSize = result.count
         let status = result.withUnsafeMutableBytes { resultBytes in
-            SecKeyRawSign(key.value, padding, (signedDataHash as NSData).bytes.bindMemory(to: UInt8.self, capacity: signedDataHash.count), signedDataHash.count, UnsafeMutablePointer<UInt8>(resultBytes), &resultSize)
+            SecKeyRawSign(key.value,
+                          padding,
+                          (signedDataHash as NSData).bytes.bindMemory(to: UInt8.self, capacity: signedDataHash.count),
+                          signedDataHash.count, UnsafeMutablePointer<UInt8>(resultBytes), &resultSize)
         }
 
         switch status {
