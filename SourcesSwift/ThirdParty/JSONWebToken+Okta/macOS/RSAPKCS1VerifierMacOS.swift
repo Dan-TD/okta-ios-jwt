@@ -11,6 +11,7 @@
 */
 
 import Foundation
+import okta_ios_jwt_objc
 
 public struct RSAPKCS1VerifierMacOS: RSAPKCS1VerifierProtocol {
     public let hashFunction: SignatureAlgorithm.HashFunction
