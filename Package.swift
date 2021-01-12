@@ -12,7 +12,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "okta-ios-jwt",
-            targets: ["okta-ios-jwt", "okta-ios-jwt-objc"]),
+            targets: ["okta-ios-jwt"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
