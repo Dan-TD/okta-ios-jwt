@@ -20,7 +20,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "okta-ios-jwt",
-            dependencies: [],
+            dependencies: ["okta-ios-jwt-objc"],
             path: "SourcesSwift",
             exclude: ["ThirdParty/JSONWebToken/Info.plist"],
             resources: [.copy("ThirdParty/JSONWebToken/LICENCE")]),
